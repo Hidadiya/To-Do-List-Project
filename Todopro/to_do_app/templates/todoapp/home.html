@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table caption {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+            margin-top: 20px;
+            width : 30%;
+            margin-left : 33rem;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <h1>Welcome To the <br>To-Do-List</h1>
+        <label for="">Enter Your Task Here</label>
+        {{ form.name }}
+        <button type="submit">Add Task</button>
+    </form>
+
+    <table border="2">
+        <caption>To Do List</caption>
+        <thead>
+            <tr>
+                <th>Todo Items</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        {% for task in all_tasks %}
+        <tbody>
+            <tr>
+                <th>{{ task.name }}</th>
+                <th>
+                    {% if task.status == True %}
+                    <h4 style="color: green;">Finished</h4>
+                    {% else %}
+                    <h4 style="color: orange;">In Progress</h4>
+                    {% endif %}
+                </th>
+                <th>
+                    <a href="{% url 'update' task.name %}"><button type="submit">Finish</button></a>
+                    <a href="{% url 'delete' task.name %}"><button type="submit" style="background-color: #dc3545;">Delete</button></a>
+                </th>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+
+    <button class="logout-button">
+        <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
+    </button>
+</body>
+</html>
